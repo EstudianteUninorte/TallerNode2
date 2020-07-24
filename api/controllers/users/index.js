@@ -1,4 +1,5 @@
 const User = require('./../../models/users');
+const Tweet = require('./../../models/tweets');
 
 const getAll = (req, res) =>{
     User.find({}, ["name", "username"])
@@ -64,4 +65,13 @@ const deleteUser = (req, res) => {
     });
 };
 
-module.exports = {getAll, getUser, newUser, updateUser, deleteUser};
+const getTweetsByUser = (req, res) => {
+    let id = req.params.id; 
+    Tweet.find({ 'user': id }, (err, response) => {
+    if (err) { res.status(500).send("Error al consultar tweet del usuario"); console.log(err); }
+    
+    else res.status(200).send(response);
+    });
+   };
+
+module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser};
