@@ -74,4 +74,6 @@ const getTweetsByUser = (req, res) => {
     });
    };
 
-module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser};
+
+module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser,totalTweetsbyUser};
+
