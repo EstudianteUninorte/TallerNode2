@@ -65,29 +65,15 @@ const deleteUser = (req, res) => {
     });
 };
 
-const totalTweetsbyUser = (req, res) => {
-    Tweet
-    .find({})
-    .populate('comments.user', 'username')
-    .populate('user', 'username')
-    .then((response)=>{
-        res.status(200).send(response);
-    })
-    .catch((err)=>{
-        res.sendStatus(500);
-    })
- 
+const getTweetsByUser = (req, res) => {
+    let id = req.params.id; 
+    Tweet.find({ 'user': id }, (err, response) => {
+    if (err) { res.status(500).send("Error al consultar tweet del usuario"); console.log(err); }
+    
+    else res.status(200).send(response);
+    });
+   };
 
 
-	/*User.find({_id: req.body.id}).then(response=>{
-        res.status(202).send('Usuario eliminado');
-    })
-    .catch(err=>{
-        res.status(500).send('Imposible eliminar usuario');
-    });*/
+module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser,totalTweetsbyUser};
 
-
-
-};
-
-module.exports = {getAll, getUser, newUser, updateUser, deleteUser, totalTweetsbyUser};
