@@ -43,7 +43,11 @@ const newTweet = (req, res) => {
 };
 
 const deleteTweet = (req, res) => {
-    res.send("Borrar tweet");
+ let idTweet = req.body.idTweet; 
+ Tweet.findByIdAndDelete(idTweet, (err, response) =>{
+ if(err) res.status(500).send('Imposible eliminar el tweet');
+ else res.status(202).send('Tweet eliminado');
+ });
 };
 
 const newComment = (req, res) => {
