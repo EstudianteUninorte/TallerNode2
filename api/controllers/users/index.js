@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const User = require('./../../models/users');
 const Tweet = require('./../../models/tweets');
 
@@ -73,6 +75,42 @@ const getTweetsByUser = (req, res) => {
     else res.status(200).send(response);
     });
    };
+
+   const totalTweetsbyUser = (req, res) => {
+	const id = req.body.id;
+
+
+	User.aggregate([
+	{ $match: { "_id": ObjectId(id) }},
+	   { $group: {_id: "$_id" , count: { $sum: 1 } }},
+	   {
+		 $lookup:
+		   {
+			 from: "tweets",
+			 localField: "_id",
+			 foreignField: "user",
+			 as: "tweets"
+		   }
+	  },
+		//{ $match: { "_id": ObjectId(id) }},
+		{ $project: { tweets: 1} },
+        { $unwind: '$tweets' }, 
+        { $group: { 
+               _id: "$_id" 
+             , count: { $sum: 1 } 
+           }
+        }
+	  
+	],function(err, result) {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json(result);
+		}
+	})
+		
+}; 
+
 
 
 module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser,totalTweetsbyUser};
