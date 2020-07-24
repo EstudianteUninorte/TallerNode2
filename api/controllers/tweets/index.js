@@ -157,4 +157,43 @@ const totalCommentsTweet  = (req, res) =>{
 	
 };
 
-module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets, totalCommentsTweet};
+const commentsTopTweets = (req, res) => {
+
+	const num = parseInt(req.params.count);
+
+	if (num > 0) {
+		Tweet.aggregate(
+			[
+				{
+					$unwind: "$comments"
+				},
+				{
+					$group: {
+						_id: "$_id",
+						content: { $first: "$content" },
+						countComments: { $sum: 1 }
+					}
+				},
+				{
+					$sort: {
+						countComments: -1
+					}
+				},
+				{
+					$limit: num
+				}
+			], function (err, result) {
+				if (err) {
+					res.send(err);
+				} else {
+					res.json(result);
+				}
+			}
+		);
+	} else {
+		res.status(500).send('Limite invalido');
+	}
+
+};
+
+module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets, totalCommentsTweet, commentsTopTweets};

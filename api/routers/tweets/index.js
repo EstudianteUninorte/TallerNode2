@@ -15,4 +15,5 @@ router.route('/lasts/:count').get(controller.lastTweets);
 router.route('/top/commenters/:count').get(controller.usersTopTweets);
 router.route('/:id/comments/count').get(controller.totalCommentsTweet);
 
+router.route('/top/:count').get(controller.commentsTopTweets);
 module.exports = router;
