@@ -1,4 +1,5 @@
 const User = require('./../../models/users');
+const Tweet = require('./../../models/tweets');
 
 const getAll = (req, res) =>{
     User.find({}, ["name", "username"])
@@ -64,4 +65,29 @@ const deleteUser = (req, res) => {
     });
 };
 
-module.exports = {getAll, getUser, newUser, updateUser, deleteUser};
+const totalTweetsbyUser = (req, res) => {
+    Tweet
+    .find({})
+    .populate('comments.user', 'username')
+    .populate('user', 'username')
+    .then((response)=>{
+        res.status(200).send(response);
+    })
+    .catch((err)=>{
+        res.sendStatus(500);
+    })
+ 
+
+
+	/*User.find({_id: req.body.id}).then(response=>{
+        res.status(202).send('Usuario eliminado');
+    })
+    .catch(err=>{
+        res.status(500).send('Imposible eliminar usuario');
+    });*/
+
+
+
+};
+
+module.exports = {getAll, getUser, newUser, updateUser, deleteUser, totalTweetsbyUser};

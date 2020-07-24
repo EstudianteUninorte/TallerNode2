@@ -11,4 +11,5 @@ router.route('/:id')
     .get(controller.getUser)
     .put(controller.updateUser);
 
+router.route('/tweets/count').get(controller.totalTweetsbyUser);
 module.exports = router;

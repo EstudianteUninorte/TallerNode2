@@ -1,4 +1,7 @@
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const Tweet = require('./../../models/tweets');
+
 const getTweets = (req, res) =>{
     Tweet
     .find({})
@@ -124,36 +127,30 @@ const usersTopTweets = (req, res) => {
 	}
 		
 };
-
-const totalTweetsbyUser = (req, res) => {
-
-    const num = parseInt(req.params.count); 
+ 
+const totalCommentsTweet  = (req, res) =>{
+    const id = req.params.id;
+    
+     Tweet.aggregate([
+       
+		{ $match: { "_id": ObjectId(id) }},
+        { $project: { comments: 1} },
+        { $unwind: '$comments' }, 
+        { $group: { 
+               _id: "$_id" 
+             , count: { $sum: 1 } 
+           }
+        }
+		
+     ], function(err, topTopics) {
+         if(err){
+             return res.send(err);
+         }
+         return res.send(topTopics);
+     });
 	
-	if(num > 0){
-		Tweet.aggregate(
-			[
-				{
-					$group: {
-						_id : "$user",
-						count: { $sum: 1 }
-					}
-				},
-				{ 
-					$sort: { 
-						count: -1 
-					} 
-				},
-			],function(err, result) {
-				if (err) {
-					res.send(err);
-				} else {
-					res.json(result);
-				}
-			}
-		);
-	}else{
-		res.status(500).send('Limite invalido');
-	}
+	
+	
 };
 
-module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets, totalTweetsbyUser};
+module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets, totalCommentsTweet};
