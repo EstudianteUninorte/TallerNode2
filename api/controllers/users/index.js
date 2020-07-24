@@ -55,7 +55,13 @@ const updateUser = (req, res) => {
 		
 };
 const deleteUser = (req, res) => {
-    res.send("Borrar usuario");
+
+	User.findOneAndDelete({_id: req.body.id}).then(response=>{
+        res.status(202).send('Usuario eliminado');
+    })
+    .catch(err=>{
+        res.status(500).send('Imposible eliminar usuario');
+    });
 };
 
 module.exports = {getAll, getUser, newUser, updateUser, deleteUser};

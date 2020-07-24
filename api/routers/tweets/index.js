@@ -13,5 +13,6 @@ router.route('/:id').get(controller.getTweet);
 router.route('/comments').delete(controller.deleteComment);
 router.route('/lasts/:count').get(controller.lastTweets);
 router.route('/top/commenters/:count').get(controller.usersTopTweets);
+//router.route('').get(controller.totalTweetsbyUser);
 
 module.exports = router;
