@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const User = require('./../../models/users');
+const Tweet = require('./../../models/tweets');
 const bcrypt = require('bcryptjs');
 const cryptojs = require('crypto-js');
 const jwt = require('jsonwebtoken');
@@ -31,6 +32,7 @@ const loginUser = (req, res) => {
 		res.sendStatus(500);
 	});
 }
+
 
 const getAll = (req, res) =>{
     User.find({}, ["name", "username", "password", "birthdate"])
@@ -137,7 +139,59 @@ const totalTweetsbyUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-    res.send("Borrar usuario");
+
+	User.findOneAndDelete({_id: req.body.id}).then(response=>{
+        res.status(202).send('Usuario eliminado');
+    })
+    .catch(err=>{
+        res.status(500).send('Imposible eliminar usuario');
+    });
 };
 
-module.exports = {getAll, getUser, newUser, updateUser, deleteUser, totalTweetsbyUser, loginUser};
+const getTweetsByUser = (req, res) => {
+    let id = req.params.id; 
+    Tweet.find({ 'user': id }, (err, response) => {
+    if (err) { res.status(500).send("Error al consultar tweet del usuario"); console.log(err); }
+    
+    else res.status(200).send(response);
+    });
+   };
+
+   const totalTweetsbyUser = (req, res) => {
+	const id = req.body.id;
+
+
+	User.aggregate([
+	{ $match: { "_id": ObjectId(id) }},
+	   { $group: {_id: "$_id" , count: { $sum: 1 } }},
+	   {
+		 $lookup:
+		   {
+			 from: "tweets",
+			 localField: "_id",
+			 foreignField: "user",
+			 as: "tweets"
+		   }
+	  },
+		//{ $match: { "_id": ObjectId(id) }},
+		{ $project: { tweets: 1} },
+        { $unwind: '$tweets' }, 
+        { $group: { 
+               _id: "$_id" 
+             , count: { $sum: 1 } 
+           }
+        }
+	  
+	],function(err, result) {
+		if (err) {
+			res.send(err);
+		} else {
+			res.json(result);
+		}
+	})
+		
+}; 
+
+
+
+module.exports = {getAll, getUser, newUser, updateUser, deleteUser, getTweetsByUser,totalTweetsbyUser, loginUser};
