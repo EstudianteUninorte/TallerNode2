@@ -50,3 +50,4 @@
 127.0.0.1 - - [25/Jul/2020:17:09:11 +0000] "POST /api/tweets HTTP/1.1" 201 193 "-" "PostmanRuntime/7.26.1"
 127.0.0.1 - - [27/Jul/2020:22:12:52 +0000] "GET / HTTP/1.1" 404 139 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36"
 127.0.0.1 - - [27/Jul/2020:22:14:27 +0000] "GET /api/tweets HTTP/1.1" 200 2043 "-" "PostmanRuntime/7.26.2"
+127.0.0.1 - - [27/Jul/2020:23:14:09 +0000] "POST /api/tweets HTTP/1.1" 201 193 "-" "PostmanRuntime/7.26.2"
