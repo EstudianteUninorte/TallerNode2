@@ -103,41 +103,6 @@ const updateUser = (req, res) => {
 		
 };
 
-const totalTweetsbyUser = (req, res) => {
-	const id = req.body.id;
-
-
-	User.aggregate([
-	{ $match: { "_id": ObjectId(id) }},
-	   { $group: {_id: "$_id" , count: { $sum: 1 } }},
-	   {
-		 $lookup:
-		   {
-			 from: "tweets",
-			 localField: "_id",
-			 foreignField: "user",
-			 as: "tweets"
-		   }
-	  },
-		//{ $match: { "_id": ObjectId(id) }},
-		{ $project: { tweets: 1} },
-        { $unwind: '$tweets' }, 
-        { $group: { 
-               _id: "$_id" 
-             , count: { $sum: 1 } 
-           }
-        }
-	  
-	],function(err, result) {
-		if (err) {
-			res.send(err);
-		} else {
-			res.json(result);
-		}
-	})
-		
-};
-
 const deleteUser = (req, res) => {
 
 	User.findOneAndDelete({_id: req.body.id}).then(response=>{
