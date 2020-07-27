@@ -1,4 +1,8 @@
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const Tweet = require('./../../models/tweets');
+
+
 const getTweets = (req, res) =>{
     Tweet
     .find({})
@@ -26,8 +30,9 @@ const getTweet = (req, res) => {
 const newTweet = (req, res) => {
     const tweet = {
         content: req.body.content,
-        user: req.body.user
+        user: req.userId
     };
+    
     if(tweet.content && tweet.user){
         const object = new Tweet(tweet);
         object.save()
@@ -125,4 +130,29 @@ const usersTopTweets = (req, res) => {
 		
 };
 
-module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets};
+const totalCommentsTweet  = (req, res) =>{
+    const id = req.params.id;
+    
+     Tweet.aggregate([
+       
+		{ $match: { "_id": ObjectId(id) }},
+        { $project: { comments: 1} },
+        { $unwind: '$comments' }, 
+        { $group: { 
+               _id: "$_id" 
+             , count: { $sum: 1 } 
+           }
+        }
+		
+     ], function(err, topTopics) {
+         if(err){
+             return res.send(err);
+         }
+         return res.send(topTopics);
+     });
+	
+	
+	
+};
+
+module.exports = {getTweets, getTweet, newTweet, deleteTweet, newComment, deleteComment, lastTweets, usersTopTweets, totalCommentsTweet};
