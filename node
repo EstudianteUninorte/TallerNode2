@@ -1,0 +1,9 @@
+npm i dotenv
+//para gurdar logs
+ morgan 
+npm i path
+npm i fs
+//
+npm i bcryptjs
+
+npm install --save-dev jest

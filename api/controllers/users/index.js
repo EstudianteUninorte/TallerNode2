@@ -68,14 +68,15 @@ const newUser = (req, res) => {
 	const birthdate = cryptojs.AES.encrypt(req.body.birthdate, 'secret key 123').toString();
 	
     const user = {
-        name: req.body.name,
+        name: req.body.name, 
         age: req.body.age,
         username: req.body.username,
         password: password,
         email: req.body.email,
 		birthdate:birthdate,
-        telephone: req.body.telephone
-    };
+		telephone: req.body.telephone,
+		role_ids: req.body.role_ids
+    }; 
     if(user.name && user.age && user.username && user.password && user.email){
         const object = new User(user);
         object.save()
