@@ -64,3 +64,6 @@
 127.0.0.1 - - [31/Jul/2020:01:09:04 +0000] "POST /api/users HTTP/1.1" 500 21 "-" "PostmanRuntime/7.26.2"
 127.0.0.1 - - [31/Jul/2020:01:12:44 +0000] "POST /api/users/ HTTP/1.1" 500 21 "-" "PostmanRuntime/7.26.2"
 127.0.0.1 - - [31/Jul/2020:01:13:36 +0000] "POST /api/users/ HTTP/1.1" 500 21 "-" "PostmanRuntime/7.26.2"
+127.0.0.1 - - [31/Jul/2020:02:10:55 +0000] "POST /api/users/login HTTP/1.1" - - "-" "PostmanRuntime/7.26.2"
+127.0.0.1 - - [31/Jul/2020:02:11:32 +0000] "POST /api/users/login HTTP/1.1" 200 209 "-" "PostmanRuntime/7.26.2"
+127.0.0.1 - - [31/Jul/2020:02:28:32 +0000] "POST /api/users/login HTTP/1.1" 200 209 "-" "PostmanRuntime/7.26.2"

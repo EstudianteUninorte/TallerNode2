@@ -22,6 +22,7 @@ const loginUser = (req, res) => {
 	User.findOne({username:user.username},["password"]).then(response => {
 		const password = response.password;
 		if(bcrypt.compareSync(user.password, password)){ 
+			console.log(config.tokenKey);
 			var token = jwt.sign({ id: response._id}, config.tokenKey); //Backdate a jwt 30 seconds
 			res.status(200).json({id:response._id, username: user.username, token:token}) 
 		}else{
